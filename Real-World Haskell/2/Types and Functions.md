@@ -44,5 +44,12 @@
 
 1. In mainstream object-oriented languages, subtype polymorphism is more widespread than parametric polymorphism. The subclassing mechanisms of C++ and Java give them subtype polymorphism. A base class defines a set of behaviors that its subclasses can modify and extend. Since Haskell isn’t an object-oriented language, it doesn’t provide subtype polymorphism.
 
-1. Also common is coercion polymorphism, which allows a value of one type to be implicitly converted into a value of another type. Many languages provide some form of coercion polymorphism; one example is automatic conversion between integers and floating-point numbers. Haskell deliberately avoids even this kind of simple automatic
-coercion.
+1. Also common is coercion polymorphism, which allows a value of one type to be implicitly converted into a value of another type. Many languages provide some form of coercion polymorphism; one example is automatic conversion between integers and floating-point numbers. Haskell deliberately avoids even this kind of simple automatic coercion.
+
+1. On the type signature of `fst`: first of all, notice that its argument contains two type variables, a and b, signifying that the elements of the tuple **can** be of different types.
+
+1. The arrows in type signatures are right associative.
+    ```hs
+    take :: Int -> ([a] -> [a])
+    ```
+    - From this, it looks like we ought to read the type signature as a function that takes one argument, an Int, and returns another function. This is correct, but it’s not easy to see what its consequences might be. We’ll

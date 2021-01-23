@@ -5,11 +5,7 @@ myDrop n xs = if n <= 0 || null xs
               then xs
               else myDrop (n - 1) (tail xs)
 
--- My recursive version of a sum
-mySum x y = if y == 0
-            then x
-            else mySum (x + 1) (y - 1)
-
-myMult x y = if y == 1
-             then x
-             else myMult (x + x) (y - 1)
+-- Exercise 2 on page 39
+-- I don't think this is the way the book expected me to do this...
+-- lastButOne :: [a] -> a
+lastButOne list = list !! (length list - 2)

@@ -21,3 +21,14 @@ iszero n = n (\_ -> false) true
 --   (\x -> x)
 --   zero
 -- fact n = ifte (iszero n) one (mult n (fact (decr n)))
+
+-- My recursive version of a sum
+-- It uses sums and subtractions internally though...
+mySum x y = if y == 0
+            then x
+            else mySum (x + 1) (y - 1)
+
+-- My recursive version of multiplication
+myMult x y = if y == 1
+             then x
+             else x + myMult x (y - 1)
