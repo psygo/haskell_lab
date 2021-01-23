@@ -7,5 +7,4 @@ myDrop n xs = if n <= 0 || null xs
 
 -- Exercise 2 on page 39
 -- I don't think this is the way the book expected me to do this...
--- lastButOne :: [a] -> a
 lastButOne list = list !! (length list - 2)

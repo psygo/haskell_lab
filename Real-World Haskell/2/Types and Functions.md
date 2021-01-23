@@ -53,3 +53,7 @@
     take :: Int -> ([a] -> [a])
     ```
     - From this, it looks like we ought to read the type signature as a function that takes one argument, an Int, and returns another function. This is correct, but it’s not easy to see what its consequences might be. We’ll
+
+1. Pure code is inherently modular: every function is selfcontained and has a well-defined interface.
+
+1. A nonobvious consequence of purity being the default is that working with impure code becomes easier. Haskell encourages a style of programming in which we separate code that must have side effects from code that doesn’t need side effects. In this style, impure code tends to be simple, with the “heavy lifting” performed in pure code.
