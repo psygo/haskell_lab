@@ -270,8 +270,26 @@ sortByLength globalList = sortBy compareLists globalList
 
 -- 7 & 8
 intersp :: a -> [[a]] -> [a]
-intersp separator (x:xs) 
+intersp separator (x : xs)
   | null xs = x
   | otherwise = x ++ [separator] ++ intersp separator xs
 
 -- 9
+height :: Tree a -> Int
+height Empty = 0
+height (Node tree leftChild rightChild) = 1 + greater (height leftChild) (height rightChild)
+  where
+    greater :: Int -> Int -> Int
+    greater x y =
+      if x >= y
+        then x
+        else y
+
+-- 10
+data Direction = Left | Right | Straight
+
+-- 11
+-- TODO
+
+-- 12
+-- TODO
