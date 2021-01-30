@@ -19,3 +19,7 @@
         - Few imperative language implementations perform TCO; this is why using any kind of ambitiously functional style in an imperative language often leads to memory leaks and poor performance.
 
 1. We’ve already matched on the nonempty constructor in the first equation that defines myMap. By elimination, the constructor in the second equation is necessarily the empty list constructor, so there’s no need to perform a match to see what its value really is.
+
+1. The class of functions that we can express using foldr is called primitive recursive. A surprisingly large number of list manipulation functions are primitive recursive.
+    - In fact, we can even write foldl using foldr!
+    - As our extended treatment of folds should indicate, the foldr function is nearly as important a member of our list-programming toolbox as the more basic list functions we saw in “Working with Lists” on page 77. It can consume and produce a list incrementally, which makes it useful for writing lazy data-processing code.
