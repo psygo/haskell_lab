@@ -10,6 +10,10 @@ module SimpleJSON
   )
 where
 
+-- The `where` above indicated where we find what we're exporting.
+-- To export everything you could also: `module ExportEverything where`
+-- To export nothing: `module ExportNothing () where`
+
 data JValue
   = JString String
   | JNumber Double
