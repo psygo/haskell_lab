@@ -53,3 +53,6 @@ hexEscape :: Char -> Doc
 hexEscape c | d < 0x10000 = smallHex d
             | otherwise   = astral (d - 0x10000)
     where d = ord c
+
+fsep :: [Doc] -> Doc
+fsep xs = undefined
