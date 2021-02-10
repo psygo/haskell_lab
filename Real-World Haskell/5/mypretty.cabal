@@ -4,8 +4,8 @@ Synopsis:    My pretty printing lib with JSON support.
 Description:
   A simple pretty printing library that demonstates how to
   build a Haskell library.
-Author:      Ben Doerr
-Maintainer:  craftsman@bendoerr.me
+Author:      Philippe Fanaro
+Maintainer:  philippefanaro@gmail.com
 
 Cabal-Version: >= 1.2
 Build-Type: Simple
