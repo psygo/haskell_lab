@@ -38,3 +38,8 @@ main = do
 
 --------------------------------------------------------------------------------
 
+-- Using overlapping instances to help the JSON code
+newtype JAry a = JAry
+  { fromJAry :: [a]
+  }
+  deriving (Eq, Ord, Show)
