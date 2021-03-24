@@ -66,3 +66,4 @@ luhn n1 n2 n3 n4 | total `mod` 10 == 0 = True
     luhnDouble1 = luhnDouble n3
     luhnDouble3 = luhnDouble n1
     total       = luhnDouble1 + n2 + luhnDouble3 + n4
+--------------------------------------------------------------------------------
