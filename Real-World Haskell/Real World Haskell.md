@@ -4,16 +4,21 @@
 
 **Table of Contents**
 
+* [Preface](#preface)
 * [1. Useful Commands](#1.-useful-commands)
 * [2. Types and Functions](#2.-types-and-functions)
 * [3. Defining Types, Streamlining Functions](#3.-defining-types,-streamlining-functions)
 * [4. Functional Programming](#4.-functional-programming)
 * [6. Typeclasses](#6.-typeclasses)
 * [7. I/O](#7.-i/o)
-* [8. Efficient File Processing, Regular Expressions, and Filename Matching](#8.-efficient-file-processing,-regularexpressions,-and-filename-matching)
+* [8. Efficient File Processing, Regular Expressions, and Filename Matching](#8.-efficient-file-processing,-regular-expressions,-and-filename-matching)
 * [9.](#9.)
 
 ---
+
+## Preface
+
+Additionally, although the focus of the language is squarely on writing statically typed programs, it is possible (though rarely seen) to write Haskell code in a dynamically typed manner.
 
 ## 1. Useful Commands
 
