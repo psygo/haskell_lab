@@ -898,4 +898,38 @@ Note that in Haskell, the selection of redexes within the bodies lambda ex-press
 
 Using innermost and outermost evaluation, but not within lambda expressions, is normally referred to as call-by-value and call-by-name evaluation, respectively.
 
+More generally, we have the following important property: if there exists any evaluation sequence that ter- minates for a given expression, then call-by-name evaluation will also terminate for this expression, and produce the same final result.
+
+In summary, call-by-name evaluation is preferable to call-by-value for the pur- pose of ensuring that evaluation terminates as often as possible.
+
+> Call-by-name vs Call-by-value
+
+*The use of call-by-name evaluation in conjunction with sharing is known aslazy evaluation. This is the evaluation strategy that is used in Haskell, as a resultof which Haskell is known as a lazy programming language. Being based uponcall-by-name evaluation, lazy evaluation has the property that it ensures thatevaluation terminates as often as possible. Moreover, using sharing ensures thatlazy evaluation never requires more steps than call-by-value evaluation. The useof the term ‘lazy’ will be explained in the next section.*
+
+### Infinite Structures
+
+Using this idea, we now see that under lazy evaluation ones is not an infinitelist as such, but rather a potentially infinite list, which is only evaluated asmuch as required by the context. This idea is not restricted to lists, but appliesequally to any form of data structure in Haskell. For example, infinite trees are considered in the exercises for this chapter.
+
+### Modular Programming
+
+> **Lazy evaluation also allows us to separate control from data in our computations.**
+
+That is, the data is only evaluated as much as required by the control, and these two parts take it in turn to perform reductions. Without lazy evaluation, the control and data parts would need to be combined in the form of a single function that produces a list of n identical elements.
+
+> **By freeing the generation of prime numbers from the constraint of finiteness, we have obtained a modular program on which different control parts can be used in different situations.**
+
+### Strict Application
+
+Haskell uses lazy evaluation by default, but also provides a special strict versionof function application, written as `$!`, which can sometimes be useful. Informally,an expression of the form `f $! x` behaves in the same way as the normal func-tional application f x, except that the top-level of evaluation of the argument expression x is forced before the function f is applied.
+
+When used with a curried function with multiple arguments, strict application can be used to force top-level evaluation of any combination of arguments. For example, if f is a curried function with two arguments, an application of the form f x y can be modified to have three different behaviours:
+
+- (f $! x) y forces top-level evaluation of x
+- (f x) $! y forces top-level evaluation of y
+- (f $! x) $! y forces top-level evaluation of x and y
+
+In Haskell, strict application is mainly used to improve the space performance of programs.
+
+## 16. Reasoning About Programs
+
 
