@@ -1,5 +1,57 @@
 # Programming in Haskell
 
+---
+
+**Table of Contents**
+
+* [1. Introduction](#1.-introduction)
+  * [Historical Background](#historical-background)
+* [2. First Steps](#2.-first-steps)
+* [3. Types and Classes](#3.-types-and-classes)
+* [4. Defining Functions](#4.-defining-functions)
+  * [Conditional Expressions](#conditional-expressions)
+  * [Lambda Expressions](#lambda-expressions)
+  * [Operator Sections](#operator-sections)
+* [5. List Comprehensions](#5.-list-comprehensions)
+  * [The `zip` function](#the-`zip`-function)
+* [6. Recursive Functions](#6.-recursive-functions)
+  * [Advice on creating recursive functions](#advice-on-creating-recursive-functions)
+* [7. Higher-order functions](#7.-higher-order-functions)
+  * [The `foldr` function](#the-`foldr`-function)
+  * [The `foldl` function](#the-`foldl`-function)
+  * [The Composition Operator](#the-composition-operator)
+* [8. Declaring Types and Classes](#8.-declaring-types-and-classes)
+  * [Types](#types)
+  * [Data Declarations](#data-declarations)
+  * [`newtype` declarations](#`newtype`-declarations)
+  * [Recursive Types](#recursive-types)
+  * [Class and Instance Declarations](#class-and-instance-declarations)
+    * [Derived Classes](#derived-classes)
+* [9. The Countdown Problem](#9.-the-countdown-problem)
+* [10. Interactive Programming](#10.-interactive-programming)
+  * [Basic Actions](#basic-actions)
+  * [Sequencing](#sequencing)
+* [12. Monads and More](#12.-monads-and-more)
+  * [Functors](#functors)
+    * [Examples](#examples)
+  * [Functor Laws](#functor-laws)
+  * [Applicatives](#applicatives)
+    * [Applicative Laws](#applicative-laws)
+  * [Monads](#monads)
+    * [Examples](#examples)
+    * [Monad Derivation](#monad-derivation)
+    * [Generic Functions](#generic-functions)
+    * [Monad Laws](#monad-laws)
+* [13. Monadic Parsing](#13.-monadic-parsing)
+* [Making Choices](#making-choices)
+* [14. Foldables and Friends](#14.-foldables-and-friends)
+  * [Foldables](#foldables)
+  * [Generic Functions](#generic-functions)
+  * [Traversables](#traversables)
+* [15. Lazy Evaluation](#15.-lazy-evaluation)
+  * [Evaluation Strategies](#evaluation-strategies)
+  * [Lambda Expressions](#lambda-expressions)
+
 ## 1. Introduction
 
 What is functional programming? Opinions differ, and it is difficult to give aprecise definition. Generally speaking, however, functional programming can beviewed as a style of programming in which the basic method of computation isthe application of functions to arguments. In turn, a functional programminglanguage is one that supports and encourages the functional style.
