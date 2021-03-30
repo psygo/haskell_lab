@@ -51,6 +51,12 @@
 * [15. Lazy Evaluation](#15.-lazy-evaluation)
   * [Evaluation Strategies](#evaluation-strategies)
   * [Lambda Expressions](#lambda-expressions)
+  * [Infinite Structures](#infinite-structures)
+  * [Modular Programming](#modular-programming)
+  * [Strict Application](#strict-application)
+* [16. Reasoning About Programs](#16.-reasoning-about-programs)
+
+---
 
 ## 1. Introduction
 
