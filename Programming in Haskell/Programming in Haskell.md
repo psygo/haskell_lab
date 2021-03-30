@@ -937,7 +937,3 @@ Patterns that do not rely on the order in which they are matchedare called non-o
 Now suppose we want to prove that some property, p say, holds for all (finite)natural numbers. Then the principle of induction states that it is sufficient toshow that p holds for Zero, called the base case, and that p is preserved by Succ,called the inductive case. More precisely, in the inductive case one is required toshow that if the property p holds for any natural number n, called the induction hypothesis, then it also holds for Succ n.
 
 > The chapter remarks have quite some interesting resources.
-
-## 17. Calculating Compilers
-
-
