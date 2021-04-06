@@ -9,22 +9,45 @@ testResultPrinter (Test title result) = do
                                            putStrLn title
                                            if result then green else red
                                            putStrLn (show result)
-                                           white
+                                           grey
+
+printTestsWithIndices :: [(Int,Test)] -> IO ()
+printTestsWithIndices []         = return ()
+printTestsWithIndices ((i,t):ts) = do
+                                      putStrLn dashes
+                                      putStrLn $ "#" ++ (show i)
+                                      testResultPrinter t
+                                      printTestsWithIndices ts
 
 testsResults :: [Test] -> IO ()
-testsResults [] = return ()
+testsResults []    = return ()
 testsResults tests = do
-                         let indexedTests = zip [1..] tests
-                         printTests indexedTests
-                         putStrLn dashes
-                           where
-                             printTests :: [(Int,Test)] -> IO ()
-                             printTests [] = return ()
-                             printTests ((i,t):ts) = do
-                                                        putStrLn dashes
-                                                        putStrLn $ "#" ++ (show i)
-                                                        testResultPrinter t
-                                                        printTests ts
+                        putStrLn emptyPadding
+                        let indexedTests  = zip [1..] tests
+                        printTestsWithIndices indexedTests
+                        putStrLn dashes
+                        blue
+                        let totalLength   = length tests
+                        putStrLn $ "Total Tests:   " ++ (show totalLength)
+                        let failures      = filterFailures tests
+                        let totalFailures = length failures
+                        let totalPassing  = totalLength - totalFailures
+                        green
+                        putStrLn $ "Passing Tests: " ++ (show totalPassing)
+                        red
+                        putStrLn $ "Failed Tests:  " ++ (show totalFailures)
+                        grey
+                        putStrLn dashes
+                        putStrLn emptyPadding
+
+filterFailures :: [Test] -> [Test]
+filterFailures [] = []
+filterFailures ((Test title result):ts) = if result
+                                             then (filterFailures ts)
+                                             else (Test title result):(filterFailures ts)
+
+main :: IO ()
+main  = testsResults dummyTests
 --------------------------------------------------------------------------------
 -- Dummy Tests
 
@@ -48,9 +71,15 @@ dummyTests = [dummyCorrectTest, dummyWrongTest]
 dashes :: String
 dashes =  replicate 80 '-'
 
-blue, green, red, white :: IO ()
+blue, green, red, grey :: IO ()
 blue  = setSGR [SetColor Foreground Vivid Blue ]
 green = setSGR [SetColor Foreground Vivid Green]
 red   = setSGR [SetColor Foreground Vivid Red  ]
-white = setSGR [SetColor Foreground Dull  White]
+grey  = setSGR [SetColor Foreground Dull  White]
+
+emptyLine :: String
+emptyLine = ""
+
+emptyPadding :: String
+emptyPadding = "\n"
 --------------------------------------------------------------------------------
