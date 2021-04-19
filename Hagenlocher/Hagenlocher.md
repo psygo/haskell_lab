@@ -331,4 +331,163 @@ partitionEithers :: [Either a b] -> ([a], [b])
 
 ## 26. Strictness, Thunks & `seq`
 
+```hs
+seq :: a -> b -> b
+seq a b = b
+```
+
+`seq` is the only function that forces the evaluation of `a` before returning `b`. That's enforced in the compiler.
+
+```hs
+f $! x = x `seq` f x
+```
+
+Returning values in IO actions is kind of useless, so that's where `$!` comes in.
+
+`seq` might throw off some things the compiler expects though.
+
+## 27. Exceptions
+
+```hs
+data MyError = ErrorA | Error B deriving Show
+
+instance Exception MyError...
+```
+
+**Exceptions may be thrown from purely functional code, but may only be caught within the IO monad.**
+
+```hs
+catch :: Exception e => IO a -> (e -> IO a) -> IO a
+-- e.g.: `catch ioAction exceptionHandler`
+```
+
+```hs
+import Control.Exception
+
+data MyError = Error deriving Show
+
+instance Exception MyError
+
+failing :: IO ()
+failing = do
+  throw Error
+
+main :: IO ()
+main = do
+  catch failing (\(e :: MyError) -> do -- needs `-XScopedTypeVariables`
+    --let t = (e :: MyError)
+    putStrLn "Something went wrong!"
+  )
+```
+
+There are other useful functions, like `catches` and `try`.
+
+Prefer using `Maybe` and `Either`, since the are purely functional. However, exceptions are the only way of dealing with IO exceptions, threads and system management.
+
+## 28. Concurrency & Threads
+
+Haskell 98 doesn't support it.
+
+In Concurrent Haskell, threads are created internally as well, so, from the system's perspective, only a couple threads might be running, when, in fact, Haskell is running thousands in its internal runtime.
+
+So how do you communicate between threads?
+
+```hs
+import Control.Concurrent
+
+forkIO :: IO () -> IO ThreadId
+-- forkIO act
+
+f :: Int -> Int -> IO ()
+f a b = do
+  let x = a+b
+  putStrLn $! show x
+
+main :: IO ()
+main = do
+  ...
+  mVar <- newEmptyMVar
+  forkIO $ f 1 2
+  result <- takeMVar mVar
+  putStrLn $ show result
+  ...
+```
+
+`MVar`s are mutable locations that can be shared. Actions on `MVar`s are atomic (ACID).
+
+```hs
+newEmptyMVar :: IO (MVar a)
+
+newMVar :: a -> IO (MVar a)
+
+takeMVar :: MVar a -> IO a
+
+putMVar :: MVar a -> a -> IO ()
+```
+
+**`mVar`'s are still lazy.**
+
+There's also a channel/queue (`chan`) abstraction. You can use channels to send signals between the threads.
+
+> Use the `--threaded` flag on GHC to enable this feature.
+
+Use `mutex` to lock resources.
+
+## 29. Semaphores
+
+This is basically a way of dealing with race conditions when updating, for example an `MVar`.
+
+> Locking synchronization mechanisms: so it might end up in a *deadlock*. This is an open problem, you have to debug and use intuition.
+
+## 30. Software Transactional Memory (STM)
+
+Instead of locking on the acquisition of the data, we check if anything has changed when we are going to finally commit to the storage.
+
+- Critical sections -> Atomic transactions
+- If a conflict arises on commit -> Rerun
+
+Ensures atomicity, consistency and isolation. **No deadlocks are possible!**
+
+> This is usually enforced on the hardware level nowadays actually.
+
+This is implemented in GHC through the `STM` (`Control.Monad.STM`) monad, which came up in a paper with Marlow and SPJ.
+
+## 31. Weak Head Normal Form
+
+In Haskell evaluation, we use *outermost reduction* and *sharing* (memoization).
+
+An expression is in normal form if and only if it is fully evaluated. Fully evaluated -> Fully executed. (Beta Reductions in Lambda calculus)
+
+Weak Head Normal Form: (only holds for data values) an expression fully evaluated up to at least the first data constructor. `seq` evaluates to WHNF, for example.
+
+`f x = <expr>` becomes `f = \x -> <expr>`.
+
+> Use `:sprint` to examine this in GHCi.
+
+## 32. `DeepSeq`
+
+[Control.DeepSeq](https://downloads.haskell.org/~ghc/7.10.1/docs/html/libraries/Control-DeepSeq.html)
+
+If things don't evaluate to normal form and get stuck at WHNF, then use `deepseq`.
+
+## 33. Parallelism
+
+Parallelism != Concurrency
+
+`cabal install parallel` modularizes parallelism.
+
+Take a look at sparks for dealing with parallel computing.
+
+[Control.Parallel.Strategies](https://hackage.haskell.org/package/parallel-3.2.2.0/docs/Control-Parallel-Strategies.html)
+
+Be careful with garbage collection though, it might occupy more processing than sparks do.
+
+## 34. Profiling
+
+1. Execution Time
+1. Memory Usage
+1. Garbage Collection
+1. Code Coverage
+1. Multicore Utilization
+
 
