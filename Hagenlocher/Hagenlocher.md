@@ -490,4 +490,140 @@ Be careful with garbage collection though, it might occupy more processing than 
 1. Code Coverage
 1. Multicore Utilization
 
+Use the `-p` flag to create a `.prof` file with a report.
 
+`.hp` files can be converted to `.ps` with `hp2ps`.
+
+The `-fhpc` can be used for code coverage.
+
+```sh
+hpc report Sort
+hpc markup Sort # generates HTML with code view
+```
+
+Install the `haskell-threadscope` for analyzing performance.
+
+Try to not optimize too much, because the compiler might not then be able to use its own optimizations.
+
+## 35. Semigroup & Monoid
+
+- Algebra: Domain + Operations (and some properties for the operations)
+  - Examples: addition arithmetic, nothing algebra, perfect hash algebra.
+- Magma: a set S with a closed binary operation. The operation produces elements that are in S.
+- Semigroup: an associative magma
+    - For lists, `<>` = `++`.
+    - (a . b) . c = a . (b . c)
+    ```hs
+    class Semigroup a where
+      (<>) :: a -> a -> a
+    ```
+- Monoid: semigroup with an identity element
+    - (a . b) . c = a . (b . c)
+    - e . a = a = a . e
+    ```hs
+    class Semigroup a => Monoid a where
+      mempty :: a
+      mappend :: a -> a -> a
+      mconcat :: [a] -> a
+      {-# MINIMAL mempty #-}
+    ```
+    - Typically `mconcat = foldr (<>) mempty`
+        - For lists: `mconcat xss = [x | xs <- xss, x <- xs]`
+    - `mempty` = []
+    - Not every type has one monoid, for example, `Int`s have different identitiy values for `+` and `*`.
+        - Then you can use `newtype` to trick things.
+
+These algebraic abstractions give promises to programmers.
+
+`<>` can be used for distributed computation, the ordering doesn't matter.
+
+Mathematical properties make mathematical proofs possible.
+
+## 36. Category Theory (Functors, Applicatives, Monads)
+
+> Objects and Arrows.
+
+Arrows:
+
+1. Identity morphisms
+1. Composition (necessary for a valid category)
+
+Category:
+
+- obj(C) := class of objects
+- hom(C) := class of morphisms
+- C(a,b) := All morphisms from a to b
+- Composition of morphisms
+    - h . f . g = (h . f) . g = h . (f . g)
+    - f . 1 = 1 . f = f
+- Identity morphism for each object
+
+Monoids are categories for example.
+
+Functors are mapping categories. Applying `map` is applying a functor as well.
+
+The Monoidal Category:
+
+```none
+Category C, Functor X
+
+X : C x C -> C (tensor product)
+I : Identity object in obj(C)
+
+Coherence conditions:
+
+alpha_{A,B,C} := (A X B) X C = A X (B X C)
+lambda_A      := I X A = A
+rho_A         := A X I = A
+```
+
+You can also create a morphism between 2 monoidal categories, with a monoidal functor. Applicatives are equivalent to (lax) monoidal functors.
+
+`fmap putStrLn getLine` = `putStrLn <$> getLine`, which is also equivalent to the `do` notation.
+
+Finally, a **Monad is a Category + Functor (which goes from the category to itself)**. Monads implement applicative functors that don't go out of context:
+
+```hs
+class Applicative m => Monad (M :: * -> *)
+  where
+    (>>=)  :: m a -> (a -> m b) -> m b
+    (>>)   :: m a -> m b -> m b
+    return :: a -> m a
+  ```
+
+### Laws
+
+Functors:
+
+```hs
+fmap id = id                    -- Identity
+fmap (f . g) = fmap f . famp go -- Composition
+```
+
+Applicatives:
+
+```hs
+pure id <*> v = v                            -- Identity
+pure f <*> pure x = pure (f x)               -- Homomorphism
+u <*> pure y = pure ($ y) <*> u              -- Interchange
+pure (.) <*> u <*> v <*> w = u <*> (v <*> w) -- Composition
+```
+
+Monads:
+
+```hs
+return a >>= f = f a                      -- Left Identity
+m >>= return = m                          -- Right Identity
+(m >>= f) >>= g = m >>= (\x -> f x >>= g) -- Associativity
+```
+
+## References
+
+Category theory is at the heart of programming.
+
+[Programming with Categories - YouTube](https://www.youtube.com/playlist?list=PLhgq-BqyZ7i7MTGhUROZy3BOICnVixETS)
+[hmemcpy/milewski-ctfp-pdf: Bartosz Milewski's 'Category Theory for Programmers' unofficial PDF and LaTeX source](https://github.com/hmemcpy/milewski-ctfp-pdf)
+
+[Seven Sketches in Compositionality by Brendan Fong & David I. Spivak](https://arxiv.org/pdf/1803.05316.pdf)
+
+[Applicative programming with effect by Conor McBride & Ross Paterson](http://www.staff.city.ac.uk/~ross/pap...)
