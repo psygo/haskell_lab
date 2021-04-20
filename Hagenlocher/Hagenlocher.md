@@ -2,6 +2,51 @@
 
 [Haskell for Imperative Programmers - YouTube](https://www.youtube.com/playlist?list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV)
 
+---
+
+**Table of Contents**
+
+* [4. List Exercises](#4.-list-exercises)
+  * [4. Directed Graphs](#4.-directed-graphs)
+* [7. Partial Function Application (Currying)](#7.-partial-function-application-(currying))
+* [8. Composisition](#8.-composisition)
+* [9. Folding](#9.-folding)
+* [12. Records](#12.-records)
+* [13. Typeclasses](#13.-typeclasses)
+* [17. Monads](#17.-monads)
+  * [The Monad Laws](#the-monad-laws)
+* [18. QuickCheck](#18.-quickcheck)
+* [Infinite Lists](#infinite-lists)
+* [20. Advanced Exercises](#20.-advanced-exercises)
+  * [20.1. Infinite Tree with Tuples on Each Node](#20.1.-infinite-tree-with-tuples-on-each-node)
+  * [20.2. Tree Traversal](#20.2.-tree-traversal)
+  * [20.3. Word Search on a File](#20.3.-word-search-on-a-file)
+* [21. `data`, `type` & `newtype`](#21.-`data`,-`type`-&-`newtype`)
+* [22. `Either`](#22.-`either`)
+* [25. Compiling Binaries](#25.-compiling-binaries)
+* [26. Strictness, Thunks & `seq`](#26.-strictness,-thunks-&-`seq`)
+* [27. Exceptions](#27.-exceptions)
+* [28. Concurrency & Threads](#28.-concurrency-&-threads)
+* [29. Semaphores](#29.-semaphores)
+* [30. Software Transactional Memory (STM)](#30.-software-transactional-memory-(stm))
+* [31. Weak Head Normal Form](#31.-weak-head-normal-form)
+* [32. `DeepSeq`](#32.-`deepseq`)
+* [33. Parallelism](#33.-parallelism)
+* [34. Profiling](#34.-profiling)
+* [35. Semigroup & Monoid](#35.-semigroup-&-monoid)
+* [36. Category Theory (Functors, Applicatives, Monads)](#36.-category-theory-(functors,-applicatives,-monads))
+  * [Laws](#laws)
+  * [References](#references)
+* [37. Arrows](#37.-arrows)
+* [38. Monad Transformers](#38.-monad-transformers)
+* [39. Formal Proofs](#39.-formal-proofs)
+* [40. Termination Proofs](#40.-termination-proofs)
+* [41. Formal Verification (using Isabelle)](#41.-formal-verification-(using-isabelle))
+  * [Isabelle](#isabelle)
+* [42. QuickSpec](#42.-quickspec)
+
+---
+
 ## 4. List Exercises
 
 ### 4. Directed Graphs
