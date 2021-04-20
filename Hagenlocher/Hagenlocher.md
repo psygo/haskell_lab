@@ -617,7 +617,7 @@ m >>= return = m                          -- Right Identity
 (m >>= f) >>= g = m >>= (\x -> f x >>= g) -- Associativity
 ```
 
-## References
+### References
 
 Category theory is at the heart of programming.
 
@@ -627,3 +627,94 @@ Category theory is at the heart of programming.
 [Seven Sketches in Compositionality by Brendan Fong & David I. Spivak](https://arxiv.org/pdf/1803.05316.pdf)
 
 [Applicative programming with effect by Conor McBride & Ross Paterson](http://www.staff.city.ac.uk/~ross/pap...)
+
+## 37. Arrows
+
+> `import Control.Arrow`
+
+A simple way of creating composition.
+
+References:
+
+- Programming with Arrows by Hughes
+- Generalizing Monads to Arrows by Hughes
+
+## 38. Monad Transformers
+
+Can we combine the functionality of an `IO` monad with, say, the `Maybe` monad?
+
+```hs
+type IOMaybe a = IO (Maybe a)
+```
+
+This is great for passing on state.
+
+State transformers are not yet stable.
+
+## 39. Formal Proofs
+
+We have to assum:
+
+- GHC is correct
+- Our computers are correct
+
+> Noetherian Induction (Structural Induction)
+
+There's also computational induction.
+
+## 40. Termination Proofs
+
+Even though they are possible and useful, it's related to the halting problem, which is undecidable.
+
+It's also useful to check out the Total Functional Programming idea if you're interested in this topic.
+
+## 41. Formal Verification (using Isabelle)
+
+Instead of going from Haskell to proofs, we do it the other way around: the proof checker generates code based on metalogic from the proof.
+
+### Isabelle
+
+A purely functional language.
+
+- Higher-Order Logic (HOL)
+- Automatic solvers
+- Code Generation (Haskell, OCaml, Scala, SML)
+- Archive of formal proofs
+- Used in verification of seL4 (microkernel)
+    - The first verified kernel in the world.
+- Features *real* math symbols with correct semantics.
+
+```thy
+theory Intro
+  imports Main
+begin
+
+fun length :: "'a list => nat"
+  where
+    "length []     = 0" |
+    "length (x#xs) = 1 + length xs"
+
+value "length [1,0,0,0,2,3::int]"
+
+fun foldr :: "('a => 'b => 'b) => 'b => 'a list => 'b"
+  where
+    "foldr f x []     = z" |
+    "foldr f z (x#xs) = fx (foldr f z xs)"
+
+fun const :: "'a => 'b => 'a"
+  where
+    "const a b = a"
+
+lemma "length xs = foldr (const (\x . x + 1)) 0 xs"
+  apply(induction xs)
+    apply(auto)
+  done
+```
+
+## 42. QuickSpec
+
+[quickspec: Equational laws for free!](https://hackage.haskell.org/package/quickspec)
+
+> It uses QuickCheck in the background.
+
+`+s` in GHCi gives back the time it took to run a command.
