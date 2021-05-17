@@ -202,3 +202,57 @@ Memoização = caching.
 `seq` avalia até a *Weak Head Normal Form* &mdash; até o primeiro construtor que você encontrar. Se você quiser realmente ir até o final, utilize `deepSeq`.
 
 `!(MyList' a)` é a notação de avaliação estrita.
+
+## IO
+
+No caso do `IO`, `World` é algo implícito, e não é possível retirar o dado da estrutura.
+
+```hs
+data IO s a = IO (World -> (World,a))
+```
+
+```hs
+Prelude Data.Char> ord <$> getChar -- funćão pura em cima de IO
+```
+
+> `putChar '\97'` coloca um caracter unicode no IO.
+
+Para IO, `return` = `pure`
+
+> Para que um módulo seja compilado, é preciso uma funćão `main` e um módulo `Main`: `stack ghc -- Ex01.hs -o Ex01`, por exemplo. Ou `stack repl`.
+
+```hs
+act' :: IO (Char,Char)
+act' =  getChar >>= \x ->
+        getChar >>
+		getChar >>= \y ->
+		return (x,y)
+		
+main :: IO ()
+main = act' >>= putStrLn . show
+```
+
+```hs
+upperCase :: String -> String
+upperCase = fmap toUpper
+
+main :: IO ()
+-- Típico padrão do aplicativo:
+main = getLine' >>= return . upperCase >>= putStrLn
+main = pure upperCase <*> getLine' >>= putStrLn
+main = liftA upperCase getLine' >>= putStrLn
+
+-- liftA f a = pure f <*> a
+```
+
+## Jogo da Forca
+
+```hs
+module Main where
+
+main = hangman
+
+hangman :: IO ()
+hangman = do putStrLn "Pense em uma palavra: "
+             word <- sgetLine
+```
