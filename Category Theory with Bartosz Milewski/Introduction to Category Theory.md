@@ -142,9 +142,83 @@ p :: c -> a
 q :: c -> b
 ```
 
-Product is the cleanest projection for `p`, `q`, and `c`.
+Product is the cleanest projection for `p`, `q`, and `c`. The product is said to be `(p,q)`.
+
+In Haskell, `p` and `q` could be viewed as the `fst` and `snd` "getters".
 
 ### 5.1. Coproducts, Sum Types
 
 The dual of the product is created on the co-category.
 
+If
+
+```hs
+i, i' :: a -> c
+j, j' :: b -> c
+
+i' = m . i
+j' = m . j
+```
+
+Then `i` and `j` are the purest forms. The co-product is the pair of injections `(i,j)`. The co-product unionizes the sets of `a` and `b`.
+
+If 2 equal sets are part of the co-product, it's a *tagged union* or *variant*.
+
+This co-product is basically the `Either` data type:
+
+```hs
+data Either a b = Left a | Right b
+```
+
+## 5.2. Algebraic Data Types
+
+Are the tuples `(a,b)` and `(b,a)` the same? No, but they are isomorphic to swapping, and they contain the same information.
+
+- Associative: `((a,b),c) = (a,(b,c))`
+- `(a,()) ~ a`
+- `Either a b ~ Either b a`
+- `Either a Void ~ a`
+- `(a,Void) ~ Void` (`a * 0 = 0`)
+- `(a, Either b c) ~ Either (a,b) (a,c)` <-> `a * (b + c) = a * b + a * c
+
+Multiplication + Addition + Inverse of Addition = Ring. A Ring without an inverse is called a Rig or Semi-Ring (what's the inverse of integer as a type? It doesn't exist).
+
+```hs
+data Maybe a = Nothing | Just a
+-- Is equivalent to `Either () a`
+-- Which is equivalent to `1 + a`
+```
+
+```hs
+-- l(a) = 1 + a * l(a)
+-- l(a) - a * l(a) = 1
+-- l(a) (1 - a) = 1
+-- l(a) = 1 / (1 - a)
+
+-- That's equivalent to:
+data List a = Nil | Cons a (List a)
+
+-- It's also the sum of geometric sequences (sum_n(a^n))
+
+-- That's why these are called algebraic data types
+```
+
+## 6.1. Functors
+
+We are interested in mappings that preserve structure. And it so happens that functions are mappings between sets, which have no structure &mdash; maybe that's why it's so difficult to implement sets in hardware, which has inherent structure.
+
+A category with only the identity arrows describes a set, and it's called a discrete category.
+
+A functor maps one category into another. It also maps morphisms and composition in the other category. And `F(g . f) = Fg . Ff`. Identity should also work.
+
+If a functor is *injective*, we call it *faithful* on all hom-sets. If a functor is *surjective*, we call it *full*.
+
+- The functor that collapses everything into a single object is called the *constant functor*.
+
+Functors that map into their own category are called *endofunctors*, as in endoscopy.
+
+```hs
+-- In Haskell, we make it parametrically polymorphic, which is more restricted than category theory. This is one of the premises for the "Theorems for Free" paper.
+f    :: a        -> b
+fmap :: (a -> b) -> Maybe a -> Maybe b
+```
