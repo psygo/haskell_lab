@@ -221,4 +221,26 @@ Functors that map into their own category are called *endofunctors*, as in endos
 -- In Haskell, we make it parametrically polymorphic, which is more restricted than category theory. This is one of the premises for the "Theorems for Free" paper.
 f    :: a        -> b
 fmap :: (a -> b) -> Maybe a -> Maybe b
+-- You could also see it as `(a -> b) -> (Maybe a -> Maybe b)`
 ```
+
+```hs
+class Functor f where
+  fmap :: (a -> b) -> f a -> f b
+  (<$) :: a -> f b -> f a
+  
+data List a = Nil | Cons a (List a)
+  
+instance Functor List where
+  fmap _ Nil        = Nil
+  fmap f (Cons h t) = Cons (f h) (fmap f t)
+  
+-- "Give me a double, and I'll give you a function of, say, bool to double"
+type Reader r a = r -> a
+
+fmap :: (a -> b) -> (r -> a) -> (r -> b)
+fmap = (.) -- r -> a -> b
+```
+
+## 7.1. Functoriality & Bifunctors
+
