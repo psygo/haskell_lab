@@ -4,6 +4,8 @@ Tags: Haskell, Category Theory, Math
 
 [Category Theory 1.1: Motivation and Philosophy - YouTube](https://www.youtube.com/watch?v=I8LbkfSSR58&list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_)
 
+## 1.1. Motivation and Philosophy
+
 - The main problem with OO is that it abstracts over mutation and shareing data: data races. You're not supposed to abstract over data races.
     - Locks don't compose either (in Java, every object has locks)
 - Template Programming is basically an adaptation of imperative languages to something like Haskell.
@@ -11,7 +13,7 @@ Tags: Haskell, Category Theory, Math
     - It's meta-math.
 - Category theory is more like epistemology (how we reason about things) than ontology (what things are).
 
-## 1. What is a category?
+## 1.2. What is a category?
 
 We want to keep:
 
@@ -39,7 +41,7 @@ Categories don't take *time* into account, hence laziness.
 
 Categories don't look inside sets, the set is an object.
 
-## 2. Functions and Epimorphisms
+## 2.1. Functions and Epimorphisms
 
 A function is pure if you can *memoize* it, i.e., you can turn it into a table. (Infinity can still be tabulated, it's a problem of resources.)
 
@@ -79,7 +81,7 @@ The empty set is the `()` in Haskell, which is also called the unit for sets. Th
 
 > A function that goes from `Bool` to `Bool` is called a predicate.
 
-## 3. Examples of Categories, Orders, Monoids
+## 3.1. Examples of Categories, Orders, Monoids
 
 ### Examples
 
@@ -105,7 +107,7 @@ Set of arrows: *hom-set*
 
 Any category with just one object is called a monoid. However it's also defined for set and group theory. In sets and groups, you still need a unit, a binary operator and associativity (not commutativity). The hom-set of a monoid is `M(m,m)`.
 
-### Kleisli Category
+## 3.2. Kleisli Category
 
 Functions that log stuff are not pure nor local. They are basically impossible to memoize.
 
@@ -116,7 +118,7 @@ A Kleisli category is an embellishment, it's also a monad.
 f :: a -> (A, String)
 ```
 
-## 4. Terminal and Initial Objects
+## 4.1. Terminal and Initial Objects
 
 An example of *terminal object* is the empty set (`()`). From every set, we can always go to the unit, terminal object, in this case.
 
@@ -131,7 +133,7 @@ Terminal objects are unique up to isomorphism.
 40:30 In isomorphism, `g . f = id` must be true because there must be an arrow going from `a` to `a` because it ends up being both an initial and terminal object.
 
 
-### 4.2. Products
+## 4.2. Products
 
 For every category, we can create a new one which is composed of reversing the arrows on the original category.
 
@@ -146,7 +148,7 @@ Product is the cleanest projection for `p`, `q`, and `c`. The product is said to
 
 In Haskell, `p` and `q` could be viewed as the `fst` and `snd` "getters".
 
-### 5.1. Coproducts, Sum Types
+## 5.1. Coproducts, Sum Types
 
 The dual of the product is created on the co-category.
 
