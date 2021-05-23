@@ -246,3 +246,187 @@ fmap = (.) -- r -> a -> b
 
 ## 7.1. Functoriality & Bifunctors
 
+A category of categories in which functors are the morphisms is another category called *Cat*.
+
+Composition of functors example:
+
+```hs
+safeTail :: [a] -> Maybe [a]
+safeTail []     = Nothing
+safeTail (x:xs) = Just xs
+```
+
+The tuple `(,)` can be viewed as the product of 2 categories, with for example `(f,g)` as internal morphisms.
+
+A *bifunctor* is a functor from a product category.
+
+```hs
+class Bifunctor f where
+  bimap :: (a -> a') -> (b -> b') -> (f a b -> f a' b')
+  -- This works for `Either a b` too.
+```
+
+## 7.2. Monoidal Categories, Functoriality of ADTs, Profunctors
+
+A category with a unit is a monoidal category.
+
+A monoidal category has a tensor product x 1.
+
+```hs
+data Const c a = Const c -- contructor and data names are not the same to the compiler
+
+instance Functor (Const c) where
+  -- fmap :: (a -> b) -> Const c a -> Const c b
+  fmap f (Const c) = Const c
+  
+data Identity a = Identity a
+
+instance Functor (Identity a) where
+  fmap f (Identity a) = Identity (f a)
+  
+-- There's an extension `{-# LANGUAGE DeriveFunctor #-}` that lets you have the compiler define the functors automatically for you. This comes as a derivation from the "Theorems for Free" paper.
+
+data Maybe a = Nothing | Just a
+               deriving Functor
+```
+
+A *Contravariant Functor* lets you revert paths &mdash; it should probably have been called opposite functor, but this had been discovered in tensors first &mdash;, in the opposite category:
+
+```hs
+class Contravariant f where
+  contramap :: (b -> a) -> (f a -> f b)
+```
+
+A *Profunctor* is what of type `C_op x C -> C`:
+
+```hs
+class Profunctor p where
+  dimap :: (a' -> a) -> (b -> b') -> p a b -> p a' b'
+```
+
+## 8.1. Function Objects, Exponentials
+
+```hs
+curry :: ((a,b) -> c) -> (a -> (b -> c))
+curry f = \a -> (\b -> f (a,b))
+
+uncurry :: (a -> (b -> c)) -> ((a,b) -> c)
+uncurry f = \(a,b) -> (f a) b
+```
+
+Synonyms: `a -> b ~ b^a | Bool -> Int ~ Int^Bool`
+
+The terminal product it the 0th power, which terminates in a unit in many cases.
+
+```math
+a^0 = 1
+Void -> a ~ ()
+
+1^a = 1
+a -> () ~ ()
+
+a^1 = a
+() -> a ~ a
+
+a^(b+c) = a^b x a^c
+Either b c -> a
+(b -> a, c -> a)
+
+(a^b)^c = a^(bxc)
+c -> (b -> a) ~ (b,c) -> a
+Currying
+
+(axb)^c = a^c x b^c
+c -> (a,b) ~ (c -> a, c -> b)
+```
+
+If we can construct an object of a proposition type, then it's true.
+
+Function type corresponds to implication (`=>`).
+
+| true     | false   | a and b   | a or b     | a => b |
+| ()       | Void    | (a,b)     | Either a b | a -> b |
+| terminal | initial | a x b     | a | b      | b^a    |
+
+a => b and a -> b ~ ((a => b), a) -> b 
+
+Curry-Howard-Lambek: Cartesian-closed model is also a model for logic and type theory.
+
+## 9.1. Natural Transformations
+
+The 3 most important definitions in category theory:
+
+- Category: structure
+- Functor: embedding one category into another
+- Natural Transformations
+
+Natural transformations are defined as mappings between functors. This is a commuting diagram between categories.
+
+```hs
+alpha . fmap f = fmap f . alpha -- 30:30: In Haskell, this is stronger than the categorical definition
+
+safeHead :: [a] -> Maybe a
+safeHead []     = Nothing
+safeHead (x:xs) = Just x
+```
+
+This is useful for optimizing code, because then you can systematically discover which function to apply first. A natural transformation repackages a container.
+
+Since ADTs are functors, functions from one ADT to another are natural transformations.
+
+## 9.2. Bicategories
+
+Functors between categories notation: [C,D] or D^C
+
+The definition of 2-category involves vertical and horizontal composition. A bicategory is a lax 2-category with "up-to-isomorphism".
+
+## 10.1. Monads
+
+> The animal-eating-function and composition is really funny.
+
+Monads, like functions, are about composition.
+
+It replaces the `.` with the fish operator (Kleisli arrow) (`>=>`) (the Kleisli arrow is usually not used because it's harder to read, like the `.`). And `id` ~ `return`. `return` helps us develop something in imperative style, which isn't bad, as long as it is controlled.
+
+```hs
+-- The true inspiration for the monadic bind is the Kleisli arrow, which is easier to read
+(>=>) :: (a -> m b) -> (b -> m c) -> (a -> m c)
+f >=> g = \a -> let mb = f a
+                in  mb >>= g
+(>>=) :: m b -> (b -> m c) -> m c
+mb >>= f = join (fmap f ma)
+join :: m (m a) -> m a
+
+class Functor m => Monad m where
+  join   :: m (m a) -> m a
+  return :: a -> m a
+
+class Monad m where
+  (>>=) :: m a -> (a -> m b) -> m b
+  return :: a -> m a
+```
+
+Examples:
+
+```hs
+-- join :: Maybe (Maybe a) -> Maybe a
+-- join (Just (Just a)) = Just a
+-- join _               = Nothing
+
+instance Maybe where
+  Nothing >>= f = Nothing
+  Just a  >>= f = f a
+
+  return a = Just a
+    
+    
+newtype State s a = State (s -> (a,s))
+
+instance State where
+  -- (a,s) -> (b,s) ~ a -> (s -> (b,s)) (Currying, now it looks more like the Kleisli arrow)
+```
+
+## 10.2. Monoid in the Category of Endofunctors
+
+Monad is just a monoid in the category of endofunctors.
+
