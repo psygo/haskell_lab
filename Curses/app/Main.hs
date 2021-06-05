@@ -1,6 +1,12 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Main where
 
-import Lib
+import Brick
+
+ui :: Widget ()
+ui = str "Hello, World!"
 
 main :: IO ()
-main = someFunc
+main = tui
+main = simpleMain ui
