@@ -1,0 +1,880 @@
+name: hid-examples
+version: 0.5
+synopsis: Examples to accompany the book "Haskell in Depth"
+description:
+        This package provides source code examples which accompany the book
+        "Haskell in Depth" by Vitaly Bragilevsky (Manning Publications 2020).
+        You may want to get this package via @cabal get hid-examples@
+        and explore its content.
+
+category:            Sample Code
+license:             BSD3
+author: Vitaly Bragilevsky
+maintainer: Vitaly Bragilevsky <vit.bragilevsky@gmail.com>
+github: bravit/hid-examples
+extra-source-files:
+    - ChangeLog.md
+    - LICENSE
+    - README.md
+    - stack.yaml
+    - .travis.yml
+    - appveyor.yml
+    - package.yaml
+
+data-files:
+    - data/*.*
+    - data/texts/*.*
+    - data/tests/iplookup/*.*
+    - data/benchmarks/iplookup/*.*
+
+tested-with: GHC == 8.6.5, GHC == 8.8.3
+
+dependencies: base >=4.12 && <4.15
+
+flags:
+  with-pg:
+      manual: True
+      default: False
+
+ghc-options:
+  - -Wall
+  - -Werror
+  - -Wcompat
+  - -Widentities
+  - -Wincomplete-uni-patterns
+  - -Wincomplete-record-updates
+  - -Wno-unused-top-binds
+  - -Wno-orphans
+
+executables:
+    # Preface
+    hello:
+        main: intro/hello.hs
+        other-modules: []
+    # Chapter 1
+    vocab1:
+        source-dirs: ch01
+        main: vocab1.hs
+        other-modules: []
+        dependencies: text >=1.2 && <1.3
+    vocab2:
+        source-dirs: ch01
+        main: vocab2.hs
+        other-modules: []
+        dependencies: text >=1.2 && <1.3
+    vocab3:
+        source-dirs: ch01
+        main: vocab3.hs
+        other-modules: []
+        other-extensions:
+          - OverloadedStrings
+        dependencies:
+          - text >=1.2 && <1.3
+          - fmt >=0.5 && <0.7
+    # Chapter 2
+    # 2.1
+    radar:
+        source-dirs: ch02/radar
+        main: Main.hs
+        other-modules: Radar
+        other-extensions:
+          - DeriveAnyClass
+        dependencies:
+          - fmt >=0.5 && <0.7
+    # 2.2
+    person-derived:
+        source-dirs: ch02/person
+        main: derived-show.hs
+        other-modules: Person
+    person-implemented:
+        source-dirs: ch02/person
+        main: implemented-show.hs
+        other-modules: Person
+    person-text:
+        source-dirs: ch02/person
+        main: text-show.hs
+        other-modules: Person
+        dependencies:
+          - text-show >=3.0 && <4
+    # Chapter 3
+    stockquotes:
+        source-dirs: stockquotes
+        main: Main.hs
+        other-extensions:
+          - RecordWildCards
+          - OverloadedStrings
+          - DeriveGeneric
+          - DeriveAnyClass
+        dependencies:
+          - bytestring >=0.10 && <0.12
+          - blaze-html >=0.9 && <0.10
+          - optparse-applicative >=0.14 && <0.17
+          - time >=1.8 && <1.12
+          - text >=1.2 && <1.3
+          - fmt >=0.5 && <0.7
+          - Chart >=1.8 && <1.10
+          - Chart-diagrams >=1.8 && <1.10
+          - cassava >=0.5 && <0.6
+          - colonnade >= 1.1 && < 1.3
+          - blaze-colonnade >= 1.1 && < 1.3
+    # Chapter 5
+    maybe:
+        source-dirs: ch05
+        main: maybe.hs
+    reader:
+        source-dirs: ch05
+        main: reader.hs
+        other-extensions:
+          - NamedFieldPuns
+        dependencies:
+          - mtl >=2.0 && <2.3
+    genSQL:
+        source-dirs: ch05
+        main: genSQL.hs
+        other-extensions:
+          - OverloadedStrings
+          - ViewPatterns
+        dependencies:
+          - text >=1.2 && <1.3
+          - mtl >=2.0 && <2.3
+    gcd:
+        source-dirs: ch05
+        main: gcd.hs
+        dependencies:
+          - mtl >=2.0 && <2.3
+    sumlist:
+        source-dirs: ch05
+        main: sumlist.hs
+        dependencies:
+          - mtl >=2.0 && <2.3
+    weapons:
+        source-dirs: ch05
+        main: weapons.hs
+        dependencies:
+          - mtl >=2.0 && <2.3
+          - random >=1.2 && <1.3
+    prefix-postfix:
+        source-dirs: expr
+        main: prefix-postfix.hs
+        other-modules: [Expr, ShuntingYard]
+        dependencies:
+        - text-show >=3.0 && <4
+        - mtl >=2.0 && <2.3
+    dicegame:
+        source-dirs: ch05
+        main: dicegame.hs
+        dependencies:
+          - mtl >=2.0 && <2.3
+          - random >=1.2 && <1.3
+    ioref:
+        source-dirs: ch05
+        main: ioref.hs
+    filecount:
+        source-dirs: ch05
+        main: filecount.hs
+        dependencies:
+          - extra >=1.5 && <1.8
+    stref:
+        source-dirs: ch05
+        main: stref.hs
+    countzeros:
+        source-dirs: ch05
+        main: countzeros.hs
+    # Chapter 6
+    evalrpn1:
+        source-dirs: expr/rpn
+        main: evalrpn1.hs
+        other-modules: [EvalRPN]
+        dependencies:
+          - mtl >= 2.0 && < 2.3
+    evalrpn2:
+        source-dirs: expr/rpn
+        main: evalrpn2.hs
+        other-modules: [EvalRPNTrans]
+        dependencies:
+          - mtl >= 2.0 && < 2.3
+    evalrpn3:
+        source-dirs: expr/rpn
+        main: evalrpn3.hs
+        other-modules: [MyMaybeT, EvalRPNTrans2]
+        dependencies:
+          - mtl >= 2.0 && < 2.3
+          - transformers >= 0.5 && < 0.6
+        other-extensions:
+          - FlexibleInstances
+          - MultiParamTypeClasses
+          - UndecidableInstances
+          - InstanceSigs
+          - LambdaCase
+    du:
+        source-dirs: du
+        main: Main.hs
+        dependencies:
+          - mtl >=2.0 && <2.3
+          - filepath >= 1.4.1 && < 1.5
+          - directory >= 1.3 && < 1.4
+          - unix-compat >= 0.5 && < 0.6
+          - optparse-applicative >= 0.14 && < 0.17
+          - text >=1.2 && <1.3
+          - text-show >=3.0 && <4
+          - extra >=1.5 && <1.8
+        default-extensions:
+          - RecordWildCards
+          - NamedFieldPuns
+          - OverloadedStrings
+        other-extensions:
+          - GeneralizedNewtypeDeriving
+    # Chapter 7
+    rpnexpr:
+        source-dirs: expr/rpn
+        main: rpnexpr.hs
+        other-modules:
+          - EvalRPNExcept
+        other-extensions:
+          - OverloadedStrings
+        dependencies:
+          - mtl >= 2.0 && < 2.3
+          - transformers >= 0.5 && < 0.6
+          - text >=1.2 && <1.3
+          - text-show >=3.0 && <4
+    div:
+      source-dirs: ch07
+      main: div.hs
+      dependencies:
+        - exceptions >= 0.10 && < 0.11
+    suntimes:
+        source-dirs: suntimes
+        main: Main.hs
+        dependencies:
+          - mtl >= 2.0 && < 2.3
+          - transformers >= 0.5 && < 0.6
+          - time >=1.8 && <1.12
+          - text >=1.2 && <1.3
+          - exceptions >= 0.10 && < 0.11
+          - aeson >= 1.2 && < 1.6
+          - req >= 2.0 && < 3.10
+          - http-client >= 0.4 && < 0.8
+          - optparse-applicative >= 0.14 && < 0.17
+          - bytestring >= 0.10 && < 0.12
+        default-extensions:
+          - OverloadedStrings
+        other-extensions:
+          - RecordWildCards
+          - DeriveGeneric
+    logging:
+      source-dirs: ch07
+      main: logging.hs
+      dependencies:
+        - monad-logger >= 0.3 && < 0.4
+        - mtl >= 2.0 && < 2.3
+        - transformers >= 0.5 && < 0.6
+        - text >=1.2 && <1.3
+    # Chapter 8
+    iplookup:
+        main: ip/lookup/Main.hs
+        dependencies:
+          - exceptions >= 0.10 && < 0.11
+          - optparse-applicative >= 0.14 && < 0.17
+          - iplookup-lib
+    ipgen:
+        main: ip/gen/Main.hs
+        dependencies:
+          - ipgen-lib
+          - exceptions >= 0.10 && < 0.11
+          - optparse-applicative >= 0.14 && < 0.17
+          - hedgehog >= 0.5 && < 1.1
+    # Chapter 9
+    unboxed:
+        main: ch09/unboxed.hs
+        other-extensions:
+          - UnboxedTuples
+          - UnboxedSums
+    isprime:
+      source-dirs: ch09/isprime
+      main: Main.hs
+      other-modules: [IsPrime]
+      dependencies:
+        - isprime-lib
+        - timeit >= 2.0 && < 2.1
+    # Chapter 10
+    iplookup-simulation:
+        main: ip/iplookup-simulation.hs
+        dependencies:
+          - iplookup-lib
+    # Chapter 11
+    temp-proxies:
+        source-dirs: ch11/temperature
+        main: temp-proxies.hs
+        other-modules: [TempPhantom, UnitNameProxies]
+        other-extensions:
+          - GeneralizedNewtypeDeriving
+          - ScopedTypeVariables
+          - PolyKinds
+          - InstanceSigs
+    temp-type-apps:
+        source-dirs: ch11/temperature
+        main: temp-type-apps.hs
+        other-modules: [TempPhantom, UnitNameTypeApps]
+        other-extensions:
+          - GeneralizedNewtypeDeriving
+          - ScopedTypeVariables
+          - PolyKinds
+          - AllowAmbiguousTypes
+          - TypeApplications
+    type-operators:
+        main: ch11/type-operators.hs
+        other-modules: []
+        other-extensions:
+          - TypeOperators
+          - NoStarIsType
+    temp-kinds:
+        source-dirs: ch11/temperature
+        main: temp-kinds.hs
+        other-modules: []
+        ghc-options: -Wno-unticked-promoted-constructors
+        other-extensions:
+          - GeneralizedNewtypeDeriving
+          - ScopedTypeVariables
+          - PolyKinds
+          - AllowAmbiguousTypes
+          - TypeApplications
+    type-lits:
+        source-dirs: ch11/type-lits
+        main: Main.hs
+        other-modules: [Pointers, SuffixedStrings]
+        other-extensions:
+          - DataKinds
+          - KindSignatures
+          - ScopedTypeVariables
+    type-families:
+        source-dirs: ch11/type-families
+        main: Main.hs
+        other-extensions:
+          - TypeFamilies
+          - FlexibleInstances
+        ghc-options:
+          -Wno-type-defaults
+        dependencies:
+          - containers >= 0.5 && < 0.7
+    dynvalues-gadt:
+        main: ch11/dynvalues-gadt.hs
+        other-extensions:
+          - GADTs
+    expr-gadt:
+        main: expr/gadts/Main.hs
+        other-extensions:
+          - GADTSyntax
+          - GADTs
+        ghc-options:
+          - -Wno-type-defaults
+          - -Wno-missing-signatures
+    nummod-rank-n:
+        source-dirs: ch11/nummod-rank-n/
+        main: Main.hs
+        other-extensions:
+          - RankNTypes
+    # Chapter 12
+    # 12.1
+    basic-deriv:
+        source-dirs: ch12/deriv/
+        main: basic-deriv.hs
+    strategies:
+        source-dirs: ch12/deriv/
+        main: strategies.hs
+        dependencies:
+          - aeson >= 1.2 && < 1.6
+    coerce:
+        source-dirs: ch12/deriv/
+        main: coerce.hs
+    newtype:
+        source-dirs: ch12/deriv/
+        main: newtype.hs
+        dependencies:
+          - mtl >=2.0 && <2.3
+    via:
+        source-dirs: ch12/deriv/
+        main: via.hs
+    # 12.2
+    view-generic:
+        source-dirs: ch12/generics/
+        main: view-generic.hs
+        ghc-options:
+          - -Wno-missing-signatures
+    generic-sql:
+        source-dirs: ch12/genSQL/
+        main: Main.hs
+        dependencies:
+          - text >=1.2 && <1.3
+          - text-show >=3.0 && <4
+    # 12.3
+    hello-th:
+        source-dirs: ch12/th/hello/
+        main: Main.hs
+        other-modules: [ Hello ]
+        dependencies:
+          - template-haskell >=2.13 && <2.17
+    projectors:
+        source-dirs: ch12/th/projectors/
+        main: Main.hs
+        other-modules: [ Projectors ]
+        dependencies:
+          - template-haskell >=2.13 && <2.17
+    predicates:
+        source-dirs: ch12/th/predicates/
+        main: Main.hs
+        other-modules: [ Predicates ]
+        dependencies:
+          - template-haskell >=2.13 && <2.17
+        ghc-options:
+          - -Wno-missing-signatures
+          - -Wno-incomplete-patterns
+    mstr-literals:
+        source-dirs: ch12/th/mstr-lits/
+        main: Main.hs
+        other-modules: [ Str ]
+        dependencies:
+          - template-haskell >=2.13 && <2.17
+        ghc-options:
+          - -Wno-missing-signatures
+          - -Wno-incomplete-patterns
+    ping-server:
+        source-dirs: ch12/rpc/ping/
+        main: server.hs
+        other-modules: [ PingCommon ]
+        dependencies:
+          - rpc-lib
+          - mtl >=2.0 && <2.3
+          - cereal >= 0.5 && <0.6
+    ping-client:
+        source-dirs: ch12/rpc/ping/
+        main: client.hs
+        other-modules: [ PingCommon ]
+        dependencies:
+          - rpc-lib
+          - mtl >=2.0 && <2.3
+          - cereal >= 0.5 && <0.6
+    # Chapter 13
+    api-stage0:
+        main: ch13/api/Api0.hs
+    api-stage1:
+        main: ch13/api/Api1.hs
+    api-stage2:
+        main: ch13/api/Api2.hs
+        other-extensions:
+          - KindSignatures
+          - TypeOperators
+          - PolyKinds
+          - DataKinds
+          - TypeFamilies
+    api-stage3:
+        main: ch13/api/Api3.hs
+        other-extensions:
+          - KindSignatures
+          - TypeOperators
+          - PolyKinds
+          - DataKinds
+          - TypeFamilies
+          - FlexibleInstances
+          - InstanceSigs
+          - ScopedTypeVariables
+    api-servant:
+        main: ch13/api/ApiServant.hs
+        dependencies:
+          - servant-server >=0.14 && <0.19
+          - servant-blaze >=0.7 && <0.10
+          - warp >=3.2 && < 3.4
+          - aeson >= 1.2 && < 1.6
+          - blaze-html >=0.9 && <0.10
+    unsafe-elevator:
+        source-dirs: ch13/elevator/
+        main: UseUnsafe.hs
+        other-modules: [Elevator.LowLevel, Elevator.Unsafe]
+        dependencies:
+          - mtl >=2.0 && <2.3
+    door:
+        main: ch13/doors/SingManual.hs
+        other-extensions:
+          - DataKinds
+          - GADTs
+          - TypeOperators
+          - KindSignatures
+          - StandaloneDeriving
+        ghc-options:
+          - -Wno-unticked-promoted-constructors
+    door-gen:
+        main: ch13/doors/SingGen.hs
+        other-extensions:
+          - DataKinds
+          - GADTs
+          - TypeOperators
+          - KindSignatures
+          - StandaloneDeriving
+        dependencies:
+          - singletons >= 2.5 && < 2.8
+        ghc-options:
+          - -Wno-unticked-promoted-constructors
+    elevator:
+        source-dirs: ch13/elevator/
+        main: UseSafe.hs
+        other-modules:
+          - Elevator.LowLevel
+          - Elevator.Safe
+          - Elevator.Safe.Floor
+          - Elevator.Safe.Operations
+          - Elevator.Safe.Moves
+        dependencies:
+          - fin >= 0.1 && < 0.2
+          - dec >= 0.0.3 && < 0.1
+          - singletons >= 2.5 && < 2.8
+          - mtl >=2.0 && <2.3
+        ghc-options:
+          - -Wno-unticked-promoted-constructors
+    # Chapter 14
+    stream:
+        main: ch14/stream.hs
+    simple-streaming:
+        main: ch14/simple-streaming.hs
+    sumtab:
+        main: ch14/sumtab.hs
+        dependencies:
+          - streaming >=0.2.2 && <0.4
+          - extra >=1.5 && <1.8
+          - text >=1.2 && <1.3
+          - text-show >=3.0 && <4
+    chars:
+        main: ch14/chars.hs
+        dependencies:
+          - streaming >=0.2.2 && <0.4
+    copy:
+        main: ch14/copy.hs
+        dependencies:
+          - streaming >=0.2.2 && <0.4
+          - streaming-bytestring >=0.1.7 && <0.3
+          - resourcet >=1.2 && <1.3
+          - filepath >= 1.4.1 && < 1.5
+    csv-simple:
+        main: ch14/csv-simple.hs
+        dependencies:
+          - text >=1.2 && <1.3
+          - attoparsec >=0.13 && <0.14
+          - bytestring >=0.10 && <0.12
+          - streaming-utils >=0.2 && <0.3
+          - streaming-bytestring >=0.1.7 && <0.3
+          - streaming >=0.2.2 && <0.4
+          - resourcet >=1.2 && <1.3
+    lens-ex:
+        main: ch14/lens-ex.hs
+        dependencies:
+          - lens >= 4.17 && < 4.20
+    covid:
+        source-dirs: ch14/covid
+        main: Main.hs
+        dependencies:
+          - bytestring >=0.10 && <0.12
+          - time >=1.8 && <1.12
+          - text >=1.2 && <1.3
+          - text-show >=3.0 && <4
+          - containers >= 0.5 && < 0.7
+          - lens >= 4.17 && < 4.20
+          - streaming-utils >=0.2 && <0.3
+          - streaming-bytestring >=0.1.7 && <0.3
+          - streaming >=0.2.2 && <0.4
+          - resourcet >=1.2 && <1.3
+          - attoparsec >=0.13 && <0.14
+    # Chapter 15
+    hdbc:
+        when:
+          - condition: flag(with-pg)
+            then:
+              source-dirs: ch15
+              main: hdbc.hs
+              other-modules: [FilmInfo.Data]
+              dependencies:
+                - HDBC >= 2.3 && < 2.5
+                - HDBC-postgresql >= 2.3 && < 2.5
+                - convertible >= 1.0 && < 1.2
+                - text >= 1.2 && < 1.3
+                - text-show >= 3.0 && < 4
+            else:
+              main: empty/Main.hs
+    pg-simple:
+        when:
+          - condition: flag(with-pg)
+            then:
+              source-dirs: ch15
+              main: pg-simple.hs
+              other-modules: [FilmInfo.Data, FilmInfo.FromField]
+              dependencies:
+                - postgresql-simple >= 0.5 && < 0.7
+                - bytestring >= 0.10 && < 0.12
+                - text >= 1.2 && < 1.3
+                - text-show >= 3.0 && < 4
+            else:
+              main: empty/Main.hs
+    hasql:
+        when:
+          - condition: flag(with-pg)
+            then:
+              source-dirs: [ch15/hasql, ch15]
+              main: Main.hs
+              other-modules:
+                - FilmInfo.Data
+                - Statements
+                - Sessions
+                - DBActions
+              dependencies:
+                - hasql >= 1.3 && < 1.5
+                - hasql-th >= 0.4 && < 0.5
+                - vector >= 0.11 && < 0.13
+                - text >= 1.2 && < 1.3
+                - text-show >= 3.0 && < 4
+                - profunctors >= 5.3 && < 5.7
+                - mtl >= 2.0 && < 2.3
+            else:
+              main: empty/Main.hs
+    opaleye:
+        when:
+          - condition: flag(with-pg)
+            then:
+              source-dirs: [ch15/opaleye, ch15]
+              main: Main.hs
+              other-modules:
+                - FilmInfo.Data
+                - FilmInfo.FromField
+                - Tables
+                - Queries
+                - DBActions
+              dependencies:
+                - opaleye >= 0.7 && < 0.8
+                - postgresql-simple >= 0.5 && < 0.7
+                - text >= 1.2 && < 1.3
+                - text-show >= 3.0 && < 4
+                - product-profunctors >= 0.11 && < 0.12
+                - profunctors >= 5.3 && < 5.7
+                - bytestring >= 0.10 && < 0.12
+            else:
+              main: empty/Main.hs
+    # Chapter 16
+    conc-hello:
+      main: ch16/conc-hello.hs
+      ghc-options: -threaded
+    dots:
+      main: ch16/dots.hs
+      ghc-options: -threaded
+    interleaving:
+      main: ch16/interleaving.hs
+      ghc-options: -threaded
+    async-exc:
+      main: ch16/async-exc.hs
+      ghc-options: -threaded
+    dots-async:
+      main: ch16/dots-async.hs
+      ghc-options: -threaded
+      dependencies:
+        - async >= 2.0 && < 2.3
+    dots-async-cancel:
+      main: ch16/dots-async-cancel.hs
+      ghc-options: -threaded
+      dependencies:
+        - async >= 2.0 && < 2.3
+        - random >=1.2 && <1.3
+    dots-async-interrupted:
+      main: ch16/dots-async-interrupted.hs
+      ghc-options: -threaded
+      dependencies:
+        - async >= 2.0 && < 2.3
+    tree-async:
+      main: ch16/tree-async.hs
+      ghc-options: -threaded
+      dependencies:
+        - async >= 2.0 && < 2.3
+    wait-completion:
+      main: ch16/wait-completion.hs
+      ghc-options: -threaded
+      dependencies:
+        - random >=1.2 && <1.3
+    sum-numbers:
+      main: ch16/sum-numbers.hs
+      dependencies:
+        - async >= 2.0 && < 2.3
+      ghc-options:
+        -threaded
+    mvar-deadlocks:
+      main: ch16/mvar-deadlocks.hs
+      dependencies:
+        - async >= 2.0 && < 2.3
+      ghc-options:
+        -threaded
+        -Wno-unused-do-bind
+    ordered-threads:
+      main: ch16/ordered-threads.hs
+      dependencies:
+        - async >= 2.0 && < 2.3
+        - stm >= 2.4 && < 2.6
+      ghc-options:
+        -threaded
+    dots-stm:
+      main: ch16/dots-stm.hs
+      dependencies:
+        - async >= 2.0 && < 2.3
+        - stm >= 2.4 && < 2.6
+      ghc-options:
+        -threaded
+    sum-numbers-many-workers:
+      main: ch16/sum-numbers-many-workers.hs
+      dependencies:
+        - async >= 2.0 && < 2.3
+        - stm >= 2.4 && < 2.6
+        - stm-chans >= 3.0 && < 3.1
+      ghc-options:
+        -threaded
+    pub-sub:
+      main: ch16/pub-sub.hs
+      dependencies:
+        - async >= 2.0 && < 2.3
+        - stm >= 2.4 && < 2.6
+        - stm-chans >= 3.0 && < 3.1
+      ghc-options:
+        -threaded
+internal-libraries:
+    # Chapter 2
+    radar-lib:
+        source-dirs: ch02/radar
+        exposed-modules: Radar
+        other-modules: []
+    expr-simple:
+        source-dirs: expr
+        exposed-modules: Expr
+        other-modules: []
+        dependencies:
+          - text-show >= 3.0 && < 4
+    contexts:
+        source-dirs: ch02
+        exposed-modules: Contexts
+        other-modules: []
+        dependencies:
+          - mtl >=2.0 && <2.3
+    # Chapter 5
+    shunting-yard:
+        source-dirs: expr
+        exposed-modules: ShuntingYard, Expr
+        other-modules: []
+        dependencies:
+          - expr-simple
+          - mtl >=2.0 && <2.3
+          - text-show >=3.0 && <4
+    # Chapter 8
+    iplookup-lib:
+        source-dirs: ip/lookup
+        exposed-modules:
+          - IPTypes
+          - LookupIP
+          - ParseIP
+          - FastLookup
+        other-modules: []
+        dependencies:
+          - split >= 0.2 && < 0.3
+          - fingertree >= 0.1 && < 0.2
+        other-extensions:
+          - TypeApplications
+        ghc-options:
+          - -Wno-incomplete-uni-patterns
+    ipgen-lib:
+        source-dirs: ip/gen
+        exposed-modules:
+          - GenIP
+        other-modules: []
+        dependencies:
+          - iplookup-lib
+          - hedgehog >= 0.5 && < 1.1
+    # Chapter 9
+    isprime-lib:
+      source-dirs: ch09/isprime
+      exposed-modules:
+        - IsPrime
+        - IsPrimeUnfolded
+      other-modules: []
+    # Chapter 12
+    rpc-lib:
+      source-dirs: ch12/rpc/lib
+      exposed-modules:
+        - ClientUtils
+        - ServerUtils
+        - RpcCommon
+      dependencies:
+        - bytestring >=0.10 && <0.12
+        - mtl >=2.0 && <2.3
+        - cereal >= 0.5 && <0.6
+        - network >= 2.8 && <3.2
+        - connection >= 0.3 && <0.4
+        - network-simple >=0.4.5 && <0.5
+        - exceptions >= 0.10 && < 0.11
+        - template-haskell >= 2.13 && <2.17
+        - haskell-src-exts >= 1.20 && <1.24
+        - haskell-src-meta >= 0.6 && < 0.9
+tests:
+    # Chapter 2
+    radar-test:
+        source-dirs: tests/radar
+        main: Test.hs
+        other-modules: []
+        dependencies:
+          - radar-lib
+          - random >=1.2 && <1.3
+    expr-simple-test:
+        source-dirs: tests/expr
+        main: Test1.hs
+        other-modules: []
+        dependencies:
+          - expr-simple
+          - hint >=0.7 && <0.10
+          - text-show >=3.0 && <4
+    # Chapter 5
+    shunting-yard-test:
+        source-dirs: tests/expr
+        main: Test2.hs
+        other-modules: []
+        dependencies:
+          - shunting-yard
+          - text-show >=3.0 && <4
+          - text >=1.2 && <1.3
+    # Chapter 8
+    iplookup-test:
+        main: Test.hs
+        source-dirs: tests/iplookup
+        dependencies:
+          - iplookup-lib
+          - ipgen-lib
+          - tasty >= 0.11 && < 1.5
+          - tasty-hspec >= 1.1 && < 1.2
+          - tasty-hedgehog >= 0.1 && < 1.1
+          - hedgehog >= 0.5 && < 1.1
+          - tasty-golden >= 2.3 && < 2.4
+          - filepath >= 1.4.1 && < 1.5
+        ghc-options:
+          - -Wno-type-defaults
+    iplookup-doctest:
+      main: tests/iplookup-doctest/Doctests.hs
+      dependencies:
+        - doctest >= 0.12 && < 0.19
+        - split >= 0.2 && < 0.3
+
+benchmarks:
+    # Chapter 10
+    primcheck:
+        main: benchmarks/primcheck.hs
+        dependencies:
+          - isprime-lib
+          - criterion >= 1.4 && < 1.6
+    iplookup-bench:
+        source-dirs: benchmarks/iplookup
+        main: Bench.hs
+        dependencies:
+          - iplookup-lib
+          - criterion >= 1.4 && < 1.6
+          - deepseq >= 1.3 && <1.5
+
+library:
+    source-dirs: empty
+    exposed-modules: Empty
+    other-modules: []

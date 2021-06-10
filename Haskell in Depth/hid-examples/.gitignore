@@ -1,0 +1,17 @@
+*~
+*.o
+*.hi
+dist
+dist-newstyle
+cabal-dev
+cabal.sandbox.config
+.cabal-sandbox
+.stack-work
+.ghc.environment.*
+*.svg
+*.html
+config.json
+.DS_Store
+.idea
+hid-examples.iml
+stack.yaml.lock
