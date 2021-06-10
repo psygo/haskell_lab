@@ -1,0 +1,10 @@
+# Cabal
+dist-newstyle/
+*.local
+
+# GHC
+*.hi
+*.o
+
+# Local Compilation
+compiled/

@@ -1,0 +1,10 @@
+{
+  "black_char": "●",
+  "black_color": "blue",
+  "white_char": "●",
+  "white_color": "green",
+  "empty_intersection_char": "·",
+  "empty_intersection_color": "grey",
+  "horizontal_spacing_char": " ",
+  "horizontal_spacing_color": "grey"
+}
