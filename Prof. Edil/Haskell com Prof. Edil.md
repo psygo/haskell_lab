@@ -161,16 +161,20 @@ Tags: Haskell, Functional Programming
 -- ST = State Transformer
 newtype ST s a = ST { app :: s -> (a,s) }
 -- f :: Char -> ST s a = Char -> s -> (a,s)
+-- Ex.:
+-- inc = ST $ \s -> (s, (s+1) `mod` 3)
+-- inc :: (ST Int Int) => ST { app :: Int -> (Int,Int) }
 
 instance Functor (ST s) where
   -- fmap :: (a -> b) -> ST s a -> ST s b
-           = (a -> b) -> (s -> (a,s)) -> (s -> (b,s))
+  --       = (a -> b) -> (s -> (a,s)) -> (s -> (b,s))
+  -- Note that `st` is the state transition function (`app`), not the state itself (`s`)
 
-  fmap f st = ST $ \s ->
-                let (a,s') = app st s
-                in (f a, s')
+  fmap f st = ST $ \s -> let (a, s') = app st s
+                          in (f a, s')
   -- Ex.:
   -- app (ord <$> (counter 'x')) S1
+  -- (Vem da aula 15)
 
 instance Applicative (ST s) where
   -- pure :: a -> ST s a
@@ -181,6 +185,7 @@ instance Applicative (ST s) where
                         let (fa, s')  = f s
                             (xa, s'') = x s'
                         in  (fa xa, s'')
+  -- O aplicativo se parece mais com um produto vetorial, enquanto que o functor se parece mais com um produto escalar.
 
 instance Monad (ST s) where
   -- (>>=) :: ST s a -> (a -> ST s b) -> ST s b
@@ -256,3 +261,38 @@ hangman :: IO ()
 hangman = do putStrLn "Pense em uma palavra: "
              word <- sgetLine
 ```
+
+## Foldable
+
+Um monóide demanda:
+
+- Um conjunto
+- `<>` (`Semigroup`)
+- `mempty`
+
+`fold` necessita de `Monoid`.
+
+Um `Foldable` do tipo `Int` possui duas possíveis instâncias de monóides (`Sum` e `Product`), portanto é preciso especificar aquela com que você gostaria de trabalhar:
+
+```ghci
+$> xs = [1,2,3] :: [Int]
+$> fold xs
+-- error
+$> xs = Sum <$> [1..5]
+$> fold xs
+15
+$> foldMap Product [1..5]
+Product {getProduct = 120}
+```
+
+Se o tipo for parametrizado por 2+ outros tipos, a instâncias do `Foldable` será uma aplicação parcial (`Either` ou `(,)`).
+
+## Traversable
+
+É a versão genérica, Haskell de um `Iterator`.
+
+```hs
+traverse f = sequenceA . fmap f
+```
+
+1:04:41 - Bom exemplo de utilização de `sequenceA` com parsers.
