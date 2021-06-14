@@ -296,3 +296,80 @@ traverse f = sequenceA . fmap f
 ```
 
 1:04:41 - Bom exemplo de utilização de `sequenceA` com parsers.
+
+## Composição de Tipos
+
+- Composição de functors é um functor.
+- Composição de aplicativos é um aplicativo.
+
+```hs
+import Control.Monad (join)
+
+newtype Identity a = Identity { runIdentity :: a }
+  deriving (Eq,Show)
+
+newtype Compose f g a = Compose { getCompose :: f (g a) }
+  deriving (Eq,Show)
+
+-- Functors --
+
+instance Functor Identity where
+  fmap f (Identity a) = Identity (f a)
+
+instance (Functor f, Functor g) => Functor (Compose f g) where
+  fmap f (Compose fga) = Compose $ (fmap.fmap) f fga
+
+-- Applicatives --
+
+instance Applicative Identity where
+  -- pure :: a -> Identity a
+  pure = Identity
+
+  -- (<*>) :: Identity (a -> b) -> Identity a -> Identity b
+  (Identity f) <*> ia = fmap f ia
+
+instance (Applicative f, Applicative g) => Applicative (Compose f g) where
+  -- pure :: a -> Compose f g a
+  pure a = Compose $ (pure.pure) a
+
+  -- (<*>) :: Compose f g (a -> b) -> Compose f g a -> Compose f g b
+  (Compose fg_ab) <*> (Compose fga) = Compose $ fmap (<*>) fg_ab <*> fga
+```
+
+## Monad Transformers
+
+> Continuando da aula anterior...
+
+Note como os tipos de `=<<` e `fmap` são similares.
+
+Infelizmente, não é possível generalizar o `Compose` para mônadas.
+
+```hs
+-- Transformers --
+
+-- A ideia é passar uma informação adicional, ao invés de `a`, passamos `f a`.
+newtype IdentityT f a = IdentityT { runIdentityT :: f a }
+  deriving (Eq,Show)
+```
+
+## Reader Monad
+
+```hs
+instance ((->) r) where
+  -- fmap :: (a -> b) -> (r -> a) -> (r -> b)
+  fmap = (.)
+  -- (.)  :: (b -> c) -> (a -> b) -> (a -> c)
+  -- ex.: fmap (*2) (+10) $ 2 -- The 2 acts as configuration
+
+instance Applicative ((->) r) where
+  pure a   = const a -- \r -> a
+  f <*> ra = \r -> f r (ra r)
+```
+
+```hs
+newtype Reader r a = Reader { runReader :: r -> a }
+
+instance Monad (Reader r) where
+  -- (>>=) :: Reader r a -> (a -> Reader r b) -> Reader r b
+  (Reader ra) >>= f = Reader $ \r -> runReader (f $ ra r) $ r
+```
