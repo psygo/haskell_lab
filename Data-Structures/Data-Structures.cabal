@@ -1,0 +1,64 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           Data-Structures
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/psygo/Data-Structures#readme>
+homepage:       https://github.com/psygo/Data-Structures#readme
+bug-reports:    https://github.com/psygo/Data-Structures/issues
+author:         Philippe Fanaro
+maintainer:     philippefanaro@gmail.com
+copyright:      GPL-3
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/psygo/Data-Structures
+
+library
+  exposed-modules:
+      Data.Stack
+      Lib
+  other-modules:
+      Paths_Data_Structures
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , pretty-simple >=3.0
+  default-language: Haskell2010
+
+executable Data-Structures-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_Data_Structures
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Data-Structures
+    , base >=4.7 && <5
+    , pretty-simple >=3.0
+  default-language: Haskell2010
+
+test-suite Data-Structures-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_Data_Structures
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Data-Structures
+    , base >=4.7 && <5
+    , pretty-simple >=3.0
+  default-language: Haskell2010
