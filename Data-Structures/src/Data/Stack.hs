@@ -5,7 +5,7 @@ module Data.Stack where
 import Data.Foldable
 --------------------------------------------------------------------------------
 -- TODO: Add stackoverflow
-newtype Stack a = StackCons [a] 
+newtype Stack a = StackCons [a]
   deriving ( Show
            , Foldable
            , Traversable)
